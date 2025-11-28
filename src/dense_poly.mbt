@@ -28,12 +28,12 @@ fn[A] drwhile_end(pred : (A) -> Bool, xs : Array[A]) -> Array[A] {
   while i >= 0 && pred(xs[i]) {
     i -= 1
   }
-  xs.split_at(i + 1).0
+  xs[0:i + 1]
 }
 
 ///|
 /// Return the leading term of the polynomial.
-pub fn[A] leading_term(self : Polynomial[A]) -> (Int, A)? {
+pub fn[A] Polynomial::leading_term(self : Polynomial[A]) -> (Int, A)? {
   if self.terms.is_empty() {
     None
   } else {
@@ -43,7 +43,7 @@ pub fn[A] leading_term(self : Polynomial[A]) -> (Int, A)? {
 
 ///|
 /// Return the leading coefficient of the polynomial.
-pub fn[A] leading_coefficient(self : Polynomial[A]) -> A? {
+pub fn[A] Polynomial::leading_coefficient(self : Polynomial[A]) -> A? {
   self.leading_term().map(x => x.1)
 }
 

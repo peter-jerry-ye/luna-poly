@@ -50,7 +50,7 @@ pub fn[V] op_set(
   exp_vec : ExpVec,
   coefficient : V,
 ) -> Unit {
-  self.inner()[exp_vec] = coefficient
+  self.0[exp_vec] = coefficient
 }
 
 ///|
@@ -75,7 +75,7 @@ pub fn[V] SparsePolynomial::remove(
   self : SparsePolynomial[V],
   exp_vec : ExpVec,
 ) -> Unit {
-  self.inner().remove(exp_vec)
+  self.0.remove(exp_vec)
 }
 
 ///|
@@ -84,7 +84,7 @@ pub fn[V] SparsePolynomial::get(
   self : SparsePolynomial[V],
   exp_vec : ExpVec,
 ) -> V? {
-  self.inner().get(exp_vec)
+  self.0.get(exp_vec)
 }
 
 ///|
@@ -92,22 +92,22 @@ pub fn[V] SparsePolynomial::contains(
   self : SparsePolynomial[V],
   exp_vec : ExpVec,
 ) -> Bool {
-  self.inner().contains(exp_vec)
+  self.0.contains(exp_vec)
 }
 
 ///|
 pub fn[V] SparsePolynomial::is_empty(self : SparsePolynomial[V]) -> Bool {
-  self.inner().is_empty()
+  self.0.is_empty()
 }
 
 ///|
 pub fn[V] SparsePolynomial::size(self : SparsePolynomial[V]) -> Int {
-  self.inner().length()
+  self.0.length()
 }
 
 ///|
 pub fn[V] SparsePolynomial::clear(self : SparsePolynomial[V]) -> Unit {
-  self.inner().clear()
+  self.0.clear()
 }
 
 ///|
@@ -115,7 +115,7 @@ pub fn[V] SparsePolynomial::each(
   self : SparsePolynomial[V],
   f : (ExpVec, V) -> Unit,
 ) -> Unit {
-  self.inner().each(f)
+  self.0.each(f)
 }
 
 ///|
@@ -123,38 +123,38 @@ pub fn[V] SparsePolynomial::eachi(
   self : SparsePolynomial[V],
   f : (Int, ExpVec, V) -> Unit,
 ) -> Unit {
-  self.inner().eachi(f)
+  self.0.eachi(f)
 }
 
 ///|
 pub fn[V] SparsePolynomial::keys(self : SparsePolynomial[V]) -> Iter[ExpVec] {
-  self.inner().keys_as_iter()
+  self.0.keys_as_iter()
 }
 
 ///|
 pub fn[V] SparsePolynomial::values(self : SparsePolynomial[V]) -> Iter[V] {
-  self.inner().values_as_iter()
+  self.0.values_as_iter()
 }
 
 ///|
 pub fn[V] SparsePolynomial::to_array(
   self : SparsePolynomial[V],
 ) -> Array[(ExpVec, V)] {
-  self.inner().to_array()
+  self.0.to_array()
 }
 
 ///|
 pub fn[V] SparsePolynomial::iter(
   self : SparsePolynomial[V],
 ) -> Iter[(ExpVec, V)] {
-  self.inner().iter()
+  self.0.iter()
 }
 
 ///|
 pub fn[V] SparsePolynomial::iter2(
   self : SparsePolynomial[V],
 ) -> Iter2[ExpVec, V] {
-  self.inner().iter2()
+  self.0.iter2()
 }
 
 ///|
@@ -175,7 +175,7 @@ pub fn[V] SparsePolynomial::range(
   low : ExpVec,
   hight : ExpVec,
 ) -> Iter2[ExpVec, V] {
-  self.inner().range(low, hight)
+  self.0.range(low, hight)
 }
 
 ///|
@@ -189,7 +189,7 @@ pub fn[V : Eq + AddMonoid] SparsePolynomial::copy(
 pub impl[V : Zero] Zero for SparsePolynomial[V] with zero() -> SparsePolynomial[
   V,
 ] {
-  let sp = SparsePolynomial::new().inner()
+  let sp = SparsePolynomial::new().0
   sp..set(ExpVec::one(), V::zero())
   sp
 }
@@ -201,15 +201,15 @@ pub fn[V : Eq + AddMonoid] SparsePolynomial::add_term_inplace(
   coefficient : V,
 ) -> Unit {
   guard coefficient != V::zero() else { return }
-  if self.inner().get(exp_vec) is None {
-    self.inner().set(exp_vec, coefficient)
+  if self.0.get(exp_vec) is None {
+    self.0.set(exp_vec, coefficient)
   } else {
-    let new_coe = self.inner().get(exp_vec).unwrap() + coefficient
-    guard new_coe != V::zero() else { self.inner().remove(exp_vec) }
-    self.inner()[exp_vec] = new_coe
+    let new_coe = self.0.get(exp_vec).unwrap() + coefficient
+    guard new_coe != V::zero() else { self.0.remove(exp_vec) }
+    self.0[exp_vec] = new_coe
     let size = self.size()
     if size == 0 {
-      self.inner().set(ExpVec::one(), V::zero())
+      self.0.set(ExpVec::one(), V::zero())
     }
   }
 }
@@ -259,26 +259,26 @@ pub fn[V : Eq + Semiring] SparsePolynomial::mul_term_inplace(
 ) -> Unit {
   if coefficient == V::zero() || self.size() == 0 {
     self.clear()
-    self.inner().set(ExpVec::one(), V::zero())
+    self.0.set(ExpVec::one(), V::zero())
   } else if exp_vec.is_one() && coefficient == V::one() {
     return
   } else if exp_vec.is_one() {
     self.each(fn(iter_exp_vec, iter_coefficient) {
-      self.inner()[iter_exp_vec] = iter_coefficient * coefficient
+      self.0[iter_exp_vec] = iter_coefficient * coefficient
     })
   } else if coefficient == V::one() {
     let other = self.copy()
     self.clear()
     for x in other {
       let (old_exp_vec, old_coefficient) = x
-      self.inner().set(old_exp_vec * exp_vec, old_coefficient)
+      self.0.set(old_exp_vec * exp_vec, old_coefficient)
     }
   } else {
     let other = self.copy()
     self.clear()
     for x in other {
       let (old_exp_vec, old_coefficient) = x
-      self.inner().set(old_exp_vec * exp_vec, old_coefficient * coefficient)
+      self.0.set(old_exp_vec * exp_vec, old_coefficient * coefficient)
     }
   }
 }
@@ -290,7 +290,7 @@ pub fn[V : Eq + Semiring] SparsePolynomial::mul_term(
   coefficient : V,
 ) -> SparsePolynomial[V] {
   if coefficient == V::zero() || self.size() == 0 {
-    let sp = SparsePolynomial::new().inner()
+    let sp = SparsePolynomial::new().0
     sp..set(ExpVec::one(), V::zero())
     sp
   } else if exp_vec.is_one() && coefficient == V::one() {
@@ -298,21 +298,21 @@ pub fn[V : Eq + Semiring] SparsePolynomial::mul_term(
   } else if exp_vec.is_one() {
     let res = self.copy()
     res..each(fn(iter_exp_vec, iter_coefficient) {
-      res.inner()[iter_exp_vec] = iter_coefficient * coefficient
+      res.0[iter_exp_vec] = iter_coefficient * coefficient
     })
     res
   } else if coefficient == V::one() {
     let res = SparsePolynomial::new()
     for x in self {
       let (old_exp_vec, old_coefficient) = x
-      res.inner().set(old_exp_vec * exp_vec, old_coefficient)
+      res.0.set(old_exp_vec * exp_vec, old_coefficient)
     }
     res
   } else {
     let res = SparsePolynomial::new()
     for x in self {
       let (old_exp_vec, old_coefficient) = x
-      res.inner().set(old_exp_vec * exp_vec, old_coefficient * coefficient)
+      res.0.set(old_exp_vec * exp_vec, old_coefficient * coefficient)
     }
     res
   }

@@ -4,7 +4,7 @@ struct MultiPoly[A] {
 }
 
 ///|
-pub fn[A] coefficients(self : MultiPoly[A]) -> Array[A] {
+pub fn[A] MultiPoly::coefficients(self : MultiPoly[A]) -> Array[A] {
   self.terms.map(x => x.1)
 }
 
