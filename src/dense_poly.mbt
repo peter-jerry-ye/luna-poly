@@ -5,7 +5,7 @@ struct Polynomial[V] {
 } derive(Eq, Compare)
 
 ///|
-impl[A : Show + Eq + Semiring] Show for Polynomial[A] with output(self, logger) {
+impl[A : Show + Semiring + Eq] Show for Polynomial[A] with output(self, logger) {
   guard not(is_zero(self)) else { logger.write_object(A::zero()) }
   let mut first = true
   for i, term in self.terms {
@@ -49,7 +49,7 @@ pub fn[A] Polynomial::leading_coefficient(self : Polynomial[A]) -> A? {
 
 ///|
 /// Convert an array to a polynomial.
-pub fn[A : Eq + Semiring] to_poly(arr : Array[A]) -> Polynomial[A] {
+pub fn[A : Semiring + Eq] to_poly(arr : Array[A]) -> Polynomial[A] {
   { terms: drwhile_end(is_zero, arr) }
 }
 
@@ -59,7 +59,7 @@ impl[A] Zero for Polynomial[A] with zero() {
 }
 
 ///|
-impl[A : Eq + Semiring] One for Polynomial[A] with one() {
+impl[A : One + Semiring + Eq] One for Polynomial[A] with one() {
   if is_zero(A::one()) {
     { terms: [] }
   } else {
@@ -125,7 +125,7 @@ pub fn[A] Polynomial::length(self : Polynomial[A]) -> Int {
 
 ///|
 /// Create a monomial from a power and a coefficient.
-pub fn[A : Eq + Semiring] monomial(
+pub fn[A : Semiring + Eq] monomial(
   power : Int,
   coefficient : A,
 ) -> Polynomial[A] {
@@ -224,7 +224,7 @@ pub fn[A : HomomorphismNat] coe(n : Int) -> Polynomial[A] {
 
 ///|
 /// Variable `x`.
-pub fn[A : Eq + Semiring] vari() -> Polynomial[A] {
+pub fn[A : Semiring + Eq] vari() -> Polynomial[A] {
   if is_zero(A::one()) {
     Polynomial::zero()
   } else {

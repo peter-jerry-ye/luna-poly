@@ -169,7 +169,7 @@ test "op neg" {
 }
 
 ///|
-impl[A : Semiring + Eq + Neg] Sub for MultiPoly[A] with sub(xs, ys) {
+impl[A : Semiring + Neg + Eq] Sub for MultiPoly[A] with sub(xs, ys) {
   xs + -ys
 }
 
