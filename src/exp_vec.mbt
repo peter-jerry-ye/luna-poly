@@ -65,8 +65,8 @@ pub fn ExpVec::length(self : ExpVec) -> Int {
 ///|
 fn ExpVec::split_at(self : ExpVec, i : Int) -> (ExpVec, ExpVec) {
   let degree = self.degree
-  let head = self.vec[0:i]
-  let tail = self.vec[i:]
+  let head = self.vec[0:i].to_array()
+  let tail = self.vec[i:].to_array()
   let l_d = head.fold(init=0U, UInt::add)
   ({ vec: head, degree: l_d }, { vec: tail, degree: degree - l_d })
 }
@@ -309,7 +309,7 @@ fn ExpVec::from_array(vec : Array[UInt]) -> ExpVec {
   while i >= 0 && vec[i] == 0 {
     i -= 1
   }
-  { vec: vec[0:i + 1], degree: vec.fold(init=0U, UInt::add) }
+  { vec: vec[0:i + 1].to_array(), degree: vec.fold(init=0U, UInt::add) }
 }
 
 ///|

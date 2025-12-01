@@ -28,7 +28,7 @@ fn[A] drwhile_end(pred : (A) -> Bool, xs : Array[A]) -> Array[A] {
   while i >= 0 && pred(xs[i]) {
     i -= 1
   }
-  xs[0:i + 1]
+  xs[0:i + 1].to_array()
 }
 
 ///|
@@ -146,12 +146,12 @@ pub fn[A : Eq + Semiring] monomial(
 
 ///|
 /// Evaluate the polynomial at a given point.
-pub fn[A : Semiring] eval(self : Polynomial[A], init : A) -> A {
+pub fn[A : Semiring] Polynomial::eval(self : Polynomial[A], init : A) -> A {
   self.substitute(A::mul, init~)
 }
 
 ///|
-pub fn[A, B : Semiring] substitute(
+pub fn[A, B : Semiring] Polynomial::substitute(
   self : Polynomial[A],
   f : (B, A) -> B,
   init~ : B,
@@ -167,7 +167,7 @@ pub fn[A, B : Semiring] substitute(
 
 ///|
 /// Substitute a polynomial's variable with another polynomial.
-pub fn[A : Eq + Semiring] substitute_poly(
+pub fn[A : Eq + Semiring] Polynomial::substitute_poly(
   self : Polynomial[A],
   x : Polynomial[A],
 ) -> Polynomial[A] {
@@ -176,7 +176,7 @@ pub fn[A : Eq + Semiring] substitute_poly(
 
 ///|
 /// Multiply a polynomial by a monomial
-pub fn[A : Eq + Semiring] scale(
+pub fn[A : Eq + Semiring] Polynomial::scale(
   self : Polynomial[A],
   power : Int,
   coefficient : A,
@@ -191,7 +191,7 @@ pub fn[A : Eq + Semiring] scale(
 
 ///|
 /// Get the derivative of the polynomial.
-pub fn[A : HomomorphismNat + Eq + Semiring] derivative(
+pub fn[A : HomomorphismNat + Eq + Semiring] Polynomial::derivative(
   self : Polynomial[A],
 ) -> Polynomial[A] {
   let len = self.length()
@@ -205,7 +205,11 @@ pub fn[A : HomomorphismNat + Eq + Semiring] derivative(
 
 ///|
 /// Fold over the polynomial.
-pub fn[A, B] fold(self : Polynomial[A], f : (B, A) -> B, init~ : B) -> B {
+pub fn[A, B] Polynomial::fold(
+  self : Polynomial[A],
+  f : (B, A) -> B,
+  init~ : B,
+) -> B {
   self.terms.fold(f, init~)
 }
 

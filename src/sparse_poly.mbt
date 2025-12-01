@@ -45,7 +45,7 @@ test "show" {
 }
 
 ///|
-pub fn[V] op_set(
+pub fn[V] SparsePolynomial::op_set(
   self : SparsePolynomial[V],
   exp_vec : ExpVec,
   coefficient : V,
@@ -437,7 +437,7 @@ pub fn[V : Eq + Semiring] SparsePolynomial::eval_at_many(
 }
 
 ///|
-pub fn[V : Eq + Semiring] SparsePolynomial::eval(
+pub fn[V : Semiring + Eq] SparsePolynomial::eval(
   self : SparsePolynomial[V],
   vars : Array[V],
 ) -> V {

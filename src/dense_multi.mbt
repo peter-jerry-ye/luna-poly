@@ -113,10 +113,14 @@ impl[A : Semiring + Eq] Add for MultiPoly[A] with add(xs, ys) {
       if ix == len_xs && iy == len_ys {
         iz
       } else if ix == len_xs {
-        Array::unsafe_blit(zs, iz, ys.terms, iy, len_ys - iy)
+        for j in iy..<len_ys {
+          zs[iz + j - iy] = ys.terms[j]
+        }
         iz + len_ys - iy
       } else if iy == len_ys {
-        Array::unsafe_blit(zs, iz, xs.terms, ix, len_xs - ix)
+        for j in ix..<len_xs {
+          zs[iz + j - ix] = xs.terms[j]
+        }
         iz + len_xs - ix
       } else {
         let (xp, xc) = xs.terms[ix]
