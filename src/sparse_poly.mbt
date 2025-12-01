@@ -437,7 +437,7 @@ pub fn[V : Eq + Semiring] SparsePolynomial::eval_at_many(
 }
 
 ///|
-pub fn[V : Semiring + Eq] SparsePolynomial::eval(
+pub fn[V : Eq + Semiring] SparsePolynomial::eval(
   self : SparsePolynomial[V],
   vars : Array[V],
 ) -> V {

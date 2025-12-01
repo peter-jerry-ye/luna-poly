@@ -113,13 +113,13 @@ impl[A : Semiring + Eq] Add for MultiPoly[A] with add(xs, ys) {
       if ix == len_xs && iy == len_ys {
         iz
       } else if ix == len_xs {
-        for j in iy..<len_ys {
-          zs[iz + j - iy] = ys.terms[j]
+        for i in iy..<len_ys {
+          zs[iz + i - iy] = ys.terms[i]
         }
         iz + len_ys - iy
       } else if iy == len_ys {
-        for j in ix..<len_xs {
-          zs[iz + j - ix] = xs.terms[j]
+        for i in ix..<len_xs {
+          zs[iz + i - ix] = xs.terms[i]
         }
         iz + len_xs - ix
       } else {
@@ -169,7 +169,7 @@ test "op neg" {
 }
 
 ///|
-impl[A : Semiring + Neg + Eq] Sub for MultiPoly[A] with sub(xs, ys) {
+impl[A : Semiring + Eq + Neg] Sub for MultiPoly[A] with sub(xs, ys) {
   xs + -ys
 }
 
