@@ -1,3 +1,4 @@
+// Generated using `moon info`, DON'T EDIT IT
 package "Luna-Flow/luna-poly"
 
 import(
@@ -5,85 +6,89 @@ import(
 )
 
 // Values
-fn[A : Eq + @luna-generic.Semiring + HomomorphismNat] coe(Int) -> Polynomial[A]
+pub fn[A : HomomorphismNat] coe(Int) -> Polynomial[A]
 
-fn[A : @luna-generic.Semiring + Eq] is_zero(A) -> Bool
+pub fn[A : @luna-generic.Semiring + Eq] is_zero(A) -> Bool
 
-fn[A : Eq + @luna-generic.Semiring] monomial(Int, A) -> Polynomial[A]
+pub fn[A : @luna-generic.Semiring + Eq] monomial(Int, A) -> Polynomial[A]
 
-fn[A : @luna-generic.Semiring + Eq] normalize(Array[(Array[UInt], A)]) -> ArrayView[(Array[UInt], A)]
+pub fn[A : @luna-generic.Semiring + Eq] normalize(Array[(Array[UInt], A)]) -> ArrayView[(Array[UInt], A)]
 
-fn[A : Eq + @luna-generic.Semiring] to_poly(Array[A]) -> Polynomial[A]
+pub fn[A : @luna-generic.Semiring + Eq] to_poly(Array[A]) -> Polynomial[A]
 
-fn[A : Eq + @luna-generic.Semiring] vari() -> Polynomial[A]
+pub fn[A : @luna-generic.Semiring + Eq] vari() -> Polynomial[A]
+
+// Errors
 
 // Types and methods
 type ExpVec
-fn ExpVec::length(Self) -> Int
-fn ExpVec::new() -> Self
-fn ExpVec::op_get(Self, Int) -> UInt
-fn ExpVec::op_set(Self, Int, UInt) -> Unit
+#alias("_[_]")
+pub fn ExpVec::get(Self, Int) -> UInt
+pub fn ExpVec::length(Self) -> Int
+pub fn ExpVec::new() -> Self
+#alias("_[_]=_")
+pub fn ExpVec::set(Self, Int, UInt) -> Unit
 
 type MultiPoly[A]
-fn[A] MultiPoly::coefficients(Self[A]) -> Array[A]
-fn[A : @luna-generic.Semiring + Eq] MultiPoly::from_array(Array[(Array[UInt], A)]) -> Self[A]
-fn[A : @luna-generic.Semiring + Eq] MultiPoly::from_terms_array(Array[(ExpVec, A)]) -> Self[A]
-fn[A : @luna-generic.Semiring + Eq] MultiPoly::scale(Self[A], (ExpVec, A)) -> Self[A]
+pub fn[A] MultiPoly::coefficients(Self[A]) -> Array[A]
+pub fn[A : @luna-generic.Semiring + Eq] MultiPoly::from_array(Array[(Array[UInt], A)]) -> Self[A]
+pub fn[A : @luna-generic.Semiring + Eq] MultiPoly::from_terms_array(Array[(ExpVec, A)]) -> Self[A]
+pub fn[A : @luna-generic.Semiring + Eq] MultiPoly::scale(Self[A], (ExpVec, A)) -> Self[A]
 
 type Polynomial[V]
-fn[A : HomomorphismNat + Eq + @luna-generic.Semiring] Polynomial::derivative(Self[A]) -> Self[A]
-fn[A : @luna-generic.Semiring] Polynomial::empty(cap~ : Int) -> Self[A]
-fn[A : @luna-generic.Semiring] Polynomial::eval(Self[A], A) -> A
-fn[A, B] Polynomial::fold(Self[A], (B, A) -> B, init~ : B) -> B
-fn[A : Eq + @luna-generic.Ring] Polynomial::karatsuba(Self[A], Self[A]) -> Self[A]
-fn[A] Polynomial::leading_coefficient(Self[A]) -> A?
-fn[A] Polynomial::leading_term(Self[A]) -> (Int, A)?
-fn[A] Polynomial::length(Self[A]) -> Int
-fn[A : Eq + @luna-generic.Semiring] Polynomial::scale(Self[A], Int, A) -> Self[A]
-fn[A, B : @luna-generic.Semiring] Polynomial::substitute(Self[A], (B, A) -> B, init~ : B) -> B
-fn[A : Eq + @luna-generic.Semiring] Polynomial::substitute_poly(Self[A], Self[A]) -> Self[A]
-impl[V : Compare] Compare for Polynomial[V]
-impl[V : Eq] Eq for Polynomial[V]
+pub fn[A : HomomorphismNat + Eq + @luna-generic.Semiring] Polynomial::derivative(Self[A]) -> Self[A]
+pub fn[A : @luna-generic.Semiring] Polynomial::empty(cap~ : Int) -> Self[A]
+pub fn[A : @luna-generic.Semiring] Polynomial::eval(Self[A], A) -> A
+pub fn[A, B] Polynomial::fold(Self[A], (B, A) -> B, init~ : B) -> B
+pub fn[A : @luna-generic.Ring] Polynomial::karatsuba(Self[A], Self[A]) -> Self[A]
+pub fn[A] Polynomial::leading_coefficient(Self[A]) -> A?
+pub fn[A] Polynomial::leading_term(Self[A]) -> (Int, A)?
+pub fn[A] Polynomial::length(Self[A]) -> Int
+pub fn[A : Eq + @luna-generic.Semiring] Polynomial::scale(Self[A], Int, A) -> Self[A]
+pub fn[A, B : @luna-generic.Semiring] Polynomial::substitute(Self[A], (B, A) -> B, init~ : B) -> B
+pub fn[A : Eq + @luna-generic.Semiring] Polynomial::substitute_poly(Self[A], Self[A]) -> Self[A]
+pub impl[V : Compare] Compare for Polynomial[V]
+pub impl[V : Eq] Eq for Polynomial[V]
 
 type SparsePolynomial[V]
-fn[V : Eq + @luna-generic.AddMonoid] SparsePolynomial::add(Self[V], Self[V]) -> Unit
-fn[V : Eq + @luna-generic.AddMonoid] SparsePolynomial::add_term(Self[V], ExpVec, V) -> Self[V]
-fn[V : Eq + @luna-generic.AddMonoid] SparsePolynomial::add_term_inplace(Self[V], ExpVec, V) -> Unit
-fn[V] SparsePolynomial::clear(Self[V]) -> Unit
-fn[V] SparsePolynomial::contains(Self[V], ExpVec) -> Bool
-fn[V : Eq + @luna-generic.AddMonoid] SparsePolynomial::copy(Self[V]) -> Self[V]
-fn[V] SparsePolynomial::each(Self[V], (ExpVec, V) -> Unit) -> Unit
-fn[V] SparsePolynomial::eachi(Self[V], (Int, ExpVec, V) -> Unit) -> Unit
-fn[V : Eq + @luna-generic.Semiring] SparsePolynomial::eval(Self[V], Array[V]) -> V
-fn[V : Show + Eq + @luna-generic.Semiring] SparsePolynomial::eval_at(Self[V], Int, V) -> Self[V]
-fn[V : Show + Eq + @luna-generic.Semiring] SparsePolynomial::eval_at_many(Self[V], Array[(Int, V)]) -> Self[V]
-fn[V : Eq + @luna-generic.AddMonoid] SparsePolynomial::from_array(Array[(ExpVec, V)]) -> Self[V]
-fn[V : Eq + @luna-generic.AddMonoid] SparsePolynomial::from_iter(Iter[(ExpVec, V)]) -> Self[V]
-fn[V] SparsePolynomial::get(Self[V], ExpVec) -> V?
-fn[V] SparsePolynomial::is_empty(Self[V]) -> Bool
-fn[V] SparsePolynomial::iter(Self[V]) -> Iter[(ExpVec, V)]
-fn[V] SparsePolynomial::iter2(Self[V]) -> Iter2[ExpVec, V]
-fn[V] SparsePolynomial::keys(Self[V]) -> Array[ExpVec]
-fn[V : Eq + @luna-generic.Semiring] SparsePolynomial::mul_term(Self[V], ExpVec, V) -> Self[V]
-fn[V : Eq + @luna-generic.Semiring] SparsePolynomial::mul_term_inplace(Self[V], ExpVec, V) -> Unit
-fn[V] SparsePolynomial::new() -> Self[V]
-fn[V] SparsePolynomial::op_get(Self[V], ExpVec) -> V?
-fn[V] SparsePolynomial::op_set(Self[V], ExpVec, V) -> Unit
-fn[A : @luna-generic.Semiring + Eq] SparsePolynomial::pow(Self[A], UInt) -> Self[A]
-fn[V] SparsePolynomial::range(Self[V], ExpVec, ExpVec) -> Iter2[ExpVec, V]
-fn[V] SparsePolynomial::remove(Self[V], ExpVec) -> Unit
-fn[A : @luna-generic.Semiring + Eq] SparsePolynomial::replace_const(Self[A], Int, A) -> Self[A]
-fn[A : @luna-generic.Semiring + Eq] SparsePolynomial::replace_poly(Self[A], Int, Self[A]) -> Self[A]
-fn[A : @luna-generic.Semiring + Eq] SparsePolynomial::replace_term(Self[A], Int, ExpVec, A) -> Self[A]
-fn[A : @luna-generic.Semiring + Eq] SparsePolynomial::replace_variable(Self[A], Int, Int) -> Self[A]
-fn[V] SparsePolynomial::size(Self[V]) -> Int
-fn[V] SparsePolynomial::to_array(Self[V]) -> Array[(ExpVec, V)]
-fn[V] SparsePolynomial::values(Self[V]) -> Array[V]
-impl[V : @luna-generic.Zero] @luna-generic.Zero for SparsePolynomial[V]
-impl[V : Eq + @luna-generic.AddMonoid] Add for SparsePolynomial[V]
-impl[V : Eq] Eq for SparsePolynomial[V]
-impl[A : @luna-generic.Semiring + Eq] Mul for SparsePolynomial[A]
-impl[V : Eq + Show + @luna-generic.Semiring] Show for SparsePolynomial[V]
+pub fn[V : Eq + @luna-generic.AddMonoid] SparsePolynomial::add(Self[V], Self[V]) -> Unit
+pub fn[V : Eq + @luna-generic.AddMonoid] SparsePolynomial::add_term(Self[V], ExpVec, V) -> Self[V]
+pub fn[V : Eq + @luna-generic.AddMonoid] SparsePolynomial::add_term_inplace(Self[V], ExpVec, V) -> Unit
+pub fn[V] SparsePolynomial::clear(Self[V]) -> Unit
+pub fn[V] SparsePolynomial::contains(Self[V], ExpVec) -> Bool
+pub fn[V : Eq + @luna-generic.AddMonoid] SparsePolynomial::copy(Self[V]) -> Self[V]
+pub fn[V] SparsePolynomial::each(Self[V], (ExpVec, V) -> Unit) -> Unit
+pub fn[V] SparsePolynomial::eachi(Self[V], (Int, ExpVec, V) -> Unit) -> Unit
+pub fn[V : @luna-generic.Semiring + Eq] SparsePolynomial::eval(Self[V], Array[V]) -> V
+pub fn[V : Eq + @luna-generic.Semiring] SparsePolynomial::eval_at(Self[V], Int, V) -> Self[V]
+pub fn[V : Eq + @luna-generic.Semiring] SparsePolynomial::eval_at_many(Self[V], Array[(Int, V)]) -> Self[V]
+pub fn[V : Eq + @luna-generic.AddMonoid] SparsePolynomial::from_array(Array[(ExpVec, V)]) -> Self[V]
+pub fn[V : Eq + @luna-generic.AddMonoid] SparsePolynomial::from_iter(Iter[(ExpVec, V)]) -> Self[V]
+#alias("_[_]")
+pub fn[V] SparsePolynomial::get(Self[V], ExpVec) -> V?
+pub fn[V] SparsePolynomial::is_empty(Self[V]) -> Bool
+pub fn[V] SparsePolynomial::iter(Self[V]) -> Iter[(ExpVec, V)]
+pub fn[V] SparsePolynomial::iter2(Self[V]) -> Iter2[ExpVec, V]
+pub fn[V] SparsePolynomial::keys(Self[V]) -> Iter[ExpVec]
+pub fn[V : Eq + @luna-generic.Semiring] SparsePolynomial::mul_term(Self[V], ExpVec, V) -> Self[V]
+pub fn[V : Eq + @luna-generic.Semiring] SparsePolynomial::mul_term_inplace(Self[V], ExpVec, V) -> Unit
+pub fn[V] SparsePolynomial::new() -> Self[V]
+pub fn[V] SparsePolynomial::op_set(Self[V], ExpVec, V) -> Unit
+pub fn[A : @luna-generic.Semiring + Eq] SparsePolynomial::pow(Self[A], UInt) -> Self[A]
+pub fn[V] SparsePolynomial::range(Self[V], ExpVec, ExpVec) -> Iter2[ExpVec, V]
+pub fn[V] SparsePolynomial::remove(Self[V], ExpVec) -> Unit
+pub fn[A : @luna-generic.Semiring + Eq] SparsePolynomial::replace_const(Self[A], Int, A) -> Self[A]
+pub fn[A : @luna-generic.Semiring + Eq] SparsePolynomial::replace_poly(Self[A], Int, Self[A]) -> Self[A]
+pub fn[A : @luna-generic.Semiring + Eq] SparsePolynomial::replace_term(Self[A], Int, ExpVec, A) -> Self[A]
+pub fn[A : @luna-generic.Semiring + Eq] SparsePolynomial::replace_variable(Self[A], Int, Int) -> Self[A]
+pub fn[V] SparsePolynomial::size(Self[V]) -> Int
+pub fn[V] SparsePolynomial::to_array(Self[V]) -> Array[(ExpVec, V)]
+pub fn[V] SparsePolynomial::values(Self[V]) -> Iter[V]
+pub impl[V : @luna-generic.Zero] @luna-generic.Zero for SparsePolynomial[V]
+pub impl[V : Eq + @luna-generic.AddMonoid] Add for SparsePolynomial[V]
+pub impl[V : Eq] Eq for SparsePolynomial[V]
+pub impl[A : @luna-generic.Semiring + Eq] Mul for SparsePolynomial[A]
+pub impl[V : Eq + Show + @luna-generic.Semiring] Show for SparsePolynomial[V]
 
 // Type aliases
 
