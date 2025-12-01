@@ -1,2 +1,2 @@
 ///|
-traitalias @lg.(One, Zero, AddMonoid, Semiring, Ring)
+using @lg {trait One, trait Zero, trait AddMonoid, trait Semiring, trait Ring}

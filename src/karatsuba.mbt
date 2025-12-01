@@ -3,7 +3,7 @@ let threshold : Int = 32
 
 ///|
 /// Multiply two polynomials using the Karatsuba algorithm.
-pub fn[A : Ring] karatsuba(
+pub fn[A : Ring] Polynomial::karatsuba(
   self : Polynomial[A],
   other : Polynomial[A],
 ) -> Polynomial[A] {

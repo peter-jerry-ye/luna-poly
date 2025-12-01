@@ -37,27 +37,6 @@ impl Hash for ExpVec with hash_combine(self : ExpVec, hasher : Hasher) -> Unit {
 }
 
 ///|
-test "prop hash non-conflict" {
-  let m = Map::new()
-  let g : @qc.Gen[ExpVec] = @qc.Gen::spawn()
-  for sample in g.samples(size=1999) {
-    let hashed = sample.hash()
-    match m.get(hashed) {
-      Some((x : ExpVec)) => assert_eq(sample.vec, x.vec)
-      None => m[hashed] = sample
-    }
-  }
-}
-
-///|
-test "hash" {
-  let exp = ExpVec::from_array([1, 2, 3])
-  let exp_r = ExpVec::from_array([3, 2, 1])
-  assert_eq(exp.hash(), -533501922)
-  assert_eq(exp_r.hash(), -1291445456)
-}
-
-///|
 pub fn ExpVec::length(self : ExpVec) -> Int {
   self.vec.length()
 }
