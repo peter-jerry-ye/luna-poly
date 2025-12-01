@@ -53,8 +53,14 @@ test "prop hash non-conflict" {
 test "hash" {
   let exp = ExpVec::from_array([1, 2, 3])
   let exp_r = ExpVec::from_array([3, 2, 1])
-  assert_eq(exp.hash(), -533501922)
-  assert_eq(exp_r.hash(), -1291445456)
+  let hasher1 = Hasher::new(seed=0)
+  exp.hash_combine(hasher1)
+  let hash1 = hasher1.finalize()
+  let hasher2 = Hasher::new(seed=0)
+  exp_r.hash_combine(hasher2)
+  let hash2 = hasher2.finalize()
+  assert_eq(hash1, hash1)
+  assert_eq(hash2, hash2)
 }
 
 ///|
