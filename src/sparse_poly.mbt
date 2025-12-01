@@ -45,7 +45,7 @@ test "show" {
 }
 
 ///|
-pub fn[V] op_set(
+pub fn[V] SparsePolynomial::op_set(
   self : SparsePolynomial[V],
   exp_vec : ExpVec,
   coefficient : V,
