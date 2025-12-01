@@ -28,7 +28,7 @@ fn[A] drwhile_end(pred : (A) -> Bool, xs : Array[A]) -> Array[A] {
   while i >= 0 && pred(xs[i]) {
     i -= 1
   }
-  xs.split_at(i + 1).0
+  xs[:i + 1].to_array()
 }
 
 ///|

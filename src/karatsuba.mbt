@@ -16,15 +16,17 @@ pub fn[A : Ring] Polynomial::karatsuba(
       let zs_len = xs_len + ys_len - 1
       let m = (@cmp.minimum(xs_len, ys_len) + 1) >> 1
       let zs = Polynomial::empty(cap=zs_len)
-      let (xs0, xs1) = xs.terms.split_at(m)
+      let xs0 = xs.terms[:m].to_array()
+      let xs1 = xs.terms[m:].to_array()
       let (xs0, xs1) = (
         Polynomial::from_array(xs0),
-        Polynomial::from_array(xs1.split_at(xs_len - m).1),
+        Polynomial::from_array(xs1[xs_len - m:].to_array()),
       )
-      let (ys0, ys1) = ys.terms.split_at(m)
+      let ys0 = ys.terms[:m].to_array()
+      let ys1 = ys.terms[m:].to_array()
       let (ys0, ys1) = (
         Polynomial::from_array(ys0),
-        Polynomial::from_array(ys1.split_at(ys_len - m).1),
+        Polynomial::from_array(ys1[ys_len - m:].to_array()),
       )
       let xs01 = xs0 + xs1
       let ys01 = ys0 + ys1

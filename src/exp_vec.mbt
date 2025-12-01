@@ -24,19 +24,6 @@ test "arbitrary" {
 }
 
 ///|
-impl Hash for ExpVec with hash_combine(self : ExpVec, hasher : Hasher) -> Unit {
-  let vec = self.vec
-  if vec.is_empty() {
-    hasher.combine_uint(0)
-  } else {
-    hasher.combine_uint(self.degree)
-    for x in vec {
-      hasher.combine_uint(x)
-    }
-  }
-}
-
-///|
 pub fn ExpVec::length(self : ExpVec) -> Int {
   self.vec.length()
 }
@@ -44,7 +31,8 @@ pub fn ExpVec::length(self : ExpVec) -> Int {
 ///|
 fn ExpVec::split_at(self : ExpVec, i : Int) -> (ExpVec, ExpVec) {
   let degree = self.degree
-  let (head, tail) = self.vec.split_at(i)
+  let head = self.vec[:i].to_array()
+  let tail = self.vec[i:].to_array()
   let l_d = head.fold(init=0U, UInt::add)
   ({ vec: head, degree: l_d }, { vec: tail, degree: degree - l_d })
 }
@@ -287,7 +275,7 @@ fn ExpVec::from_array(vec : Array[UInt]) -> ExpVec {
   while i >= 0 && vec[i] == 0 {
     i -= 1
   }
-  { vec: vec.split_at(i + 1).0, degree: vec.fold(init=0U, UInt::add) }
+  { vec: vec[:i + 1].to_array(), degree: vec.fold(init=0U, UInt::add) }
 }
 
 ///|
